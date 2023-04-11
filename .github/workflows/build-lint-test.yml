@@ -1,0 +1,32 @@
+name: 'Regression Tests'
+on:
+  pull_request:
+    branches:
+      - 'main'
+jobs:
+  reg-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Get Python
+        uses: actions/setup-python@v4
+      - name: Fetch Build Dependencies
+        run: sudo apt-get install -y ninja-build clang-tidy clang-format
+      - name: Fetch meson
+        run: sudo python3 -m pip install meson
+
+      - name: Setup Build Directory
+        run: meson setup build
+
+      - name: Attempt to Build
+        working-directory: ./build
+        run: meson compile
+
+      - name: Lint
+        working-directory: ./build
+        run: meson compile lint
+
+      - name: Test
+        working-directory: ./build
+        run: meson test
