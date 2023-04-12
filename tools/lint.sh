@@ -9,7 +9,7 @@ lint_dir() {
         echo "Linting $x."
         clang-format -Werror --dry-run "$x"
         LINT_FAILED+=$?
-        clang-tidy "$x"
+        clang-tidy -p build "$x"
         LINT_FAILED+=$?
     done
 
