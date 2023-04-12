@@ -9,5 +9,42 @@ Because `orpheus` is to be converted to `sysverilog` at one point, the graph
 generation is **done at compile time**, avoiding dynamic memory and similar
 shenanigans.
 
-Originally, orpheus was designed to be written in `C`, but nobody likes `C`'s
-macros so I decided to migrate to `C++`.
+## Prerequesites
+
+* `-std=c++20`
+* [meson](https://mesonbuild.com/)
+* POSIX Shell + Bash
+* [catch2](https://github.com/catchorg/Catch2)
+
+## Building
+
+After you collected all of these, clone and build:
+
+```bash
+git clone git@github.com:fpgaudio/orpheus.git
+cd orpheus
+git submodule update
+meson setup build
+cd build
+meson compile
+meson test -v
+```
+
+Tests should pass and you should see cool graphs:
+
+```text
+ 32767 ┤                 ╭──────────────╮                                                                   
+ 26214 ┤            ╭────╯              ╰────╮                                                              
+ 19660 ┤        ╭───╯                        ╰───╮                                                          
+ 13107 ┤    ╭───╯                                ╰───╮                                                      
+  6553 ┤ ╭──╯                                        ╰──╮                                                   
+     0 ┼─╯                                              ╰──╮                                              ╭ 
+ -6553 ┤                                                   ╰──╮                                        ╭──╯ 
+-13107 ┤                                                      ╰───╮                                ╭───╯    
+-19660 ┤                                                          ╰───╮                        ╭───╯        
+-26214 ┤                                                              ╰────╮              ╭────╯            
+-32767 ┤                                                                   ╰──────────────╯                 
+
+===============================================================================
+All tests passed (5 assertions in 2 test cases)
+```
