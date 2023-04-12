@@ -109,7 +109,9 @@ public:
   NODEFAULT_NOCOPY_NOMOVE(Source);
 
   constexpr explicit Source(const Engine *engine) : Node(engine) {}
-  constexpr void setPeriodTicks(Engine::SampleType period) { m_period = period; }
+  constexpr void setPeriodTicks(Engine::SampleType period) {
+    m_period = period;
+  }
   [[nodiscard]] constexpr auto getPeriodTicks() const -> Engine::SampleType {
     return m_period;
   }

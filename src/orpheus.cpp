@@ -10,9 +10,12 @@ namespace Orpheus {
 
 namespace Graph {
 
-auto Inverse::operator()() const -> Engine::QuantType { return -m_inp(); }
+auto Inverse::operator()() const -> Engine::QuantType {
+  return static_cast<Engine::QuantType>(-m_inp());
+}
 auto Attenuator::operator()() const -> Engine::QuantType {
-  return (m_attenFactor * m_inp()) / std::numeric_limits<AttenFactor>::max();
+  return static_cast<Engine::QuantType>(
+      m_attenFactor * m_inp() / std::numeric_limits<AttenFactor>::max());
 }
 void Attenuator::setAtten(AttenFactor attenuation) {
   m_attenFactor = attenuation;
@@ -29,7 +32,8 @@ auto SineSource::operator()() const -> Engine::QuantType {
   const auto samplePeriodS = samplePeriodNs * 1e-9;
   const auto cTime = static_cast<float>(tickCount * samplePeriodNs) * 1e-9;
 
-  const auto frequency = 1.0F / static_cast<float>(getPeriodTicks() * samplePeriodS);
+  const auto frequency =
+      1.0F / static_cast<float>(getPeriodTicks() * samplePeriodS);
   const auto ampl =
       static_cast<float>(std::numeric_limits<Engine::QuantType>::max());
   const auto out = static_cast<float>(
