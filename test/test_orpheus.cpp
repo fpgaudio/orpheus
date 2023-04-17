@@ -4,7 +4,7 @@
 #include <chrono>
 #include <cstdint>
 #define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include "catch2/catch.hpp"
 #include <limits>
 
 template<typename T> auto time_ns2s(T nanosecs) -> float;

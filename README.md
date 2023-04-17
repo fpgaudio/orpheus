@@ -23,7 +23,7 @@ After you collected all of these, clone and build:
 ```bash
 git clone git@github.com:fpgaudio/orpheus.git
 cd orpheus
-git submodule update
+git submodule update --init
 meson setup build
 cd build
 meson compile
