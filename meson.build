@@ -1,6 +1,7 @@
 project('orpheus', 'cpp', default_options: [
   'default_library=static',
   'cpp_std=c++20',
+  'b_coverage=true',
 ], version: '0.1.0')
 
 include_directories = [

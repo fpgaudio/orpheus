@@ -40,3 +40,7 @@ jobs:
       - name: Test
         working-directory: ./build
         run: meson test
+
+      - name: Calculate Coverage
+        working-directory: ./build
+        run: ninja coverage-text && cat meson-logs/coverage.txt

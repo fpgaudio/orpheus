@@ -48,3 +48,18 @@ Tests should pass and you should see cool graphs:
 ===============================================================================
 All tests passed (5 assertions in 2 test cases)
 ```
+
+## Testing
+
+You can test the code by running:
+
+```bash
+cd build
+meson test
+ninja coverage-html
+```
+
+The test output should be spat out in the command line.
+
+Then, in your browser, open up `build/meson-logs/coverage.html` to check the
+code coverage.
