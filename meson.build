@@ -4,7 +4,7 @@ project('orpheus', 'cpp', default_options: [
 ], version: '0.1.0')
 
 include_directories = [
-  'include'
+  'include',
 ]
 
 sources = [
@@ -16,13 +16,17 @@ run_target('auto-lint', command: 'tools/auto-lint.sh')
 
 library('orpheus', sources, include_directories: include_directories)
 
-test_catch2_dep = dependency('catch2', main: true, required: false, disabler: true)
+test_includes = [
+  include_directories,
+  'lib/Catch2/single_include',
+  'lib/asciichart/include/ascii',
+]
+
 test('test_orpheus',
   executable(
     'test_orpheus',
     ['test/test_orpheus.cpp', 'src/orpheus.cpp'],
-    include_directories: [include_directories, 'lib/asciichart/include/ascii'],
-    dependencies: [test_catch2_dep]
+    include_directories: test_includes,
   ),
   args: ['-s']
 )

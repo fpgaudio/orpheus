@@ -20,6 +20,9 @@ jobs:
       - name: Fetch meson
         run: sudo python3 -m pip install meson
 
+      - name: Fetch Submodules
+        run: git submodule update --init --recursive
+
       - name: Setup Build Directory
         run: meson setup build
 
