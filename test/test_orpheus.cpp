@@ -1,7 +1,7 @@
 #include "orpheus.hpp"
 #include "ascii.h"
 #include <algorithm>
-#include <bits/chrono.h>
+#include <chrono>
 #include <cstdint>
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
