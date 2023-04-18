@@ -13,6 +13,17 @@ namespace Graph {
 auto Inverse::operator()() const -> Engine::QuantType {
   return static_cast<Engine::QuantType>(-m_inp());
 }
+auto Inverse::operator!() const -> std::string {
+  return R"HERE(
+    module orpheus_inverse(i, o)
+      input i;
+      output o;
+
+      o <= -i;
+    endmodule
+  )HERE";
+}
+
 auto Attenuator::operator()() const -> Engine::QuantType {
   const auto input = m_inp();
   const Engine::DoubleQuantType scaled = input * m_attenFactor;

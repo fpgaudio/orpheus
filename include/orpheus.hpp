@@ -3,9 +3,11 @@
 
 #include "cxx_fix.hpp"
 #include <cstdint>
+#include <format>
 #include <initializer_list>
 #include <limits>
 #include <numeric>
+#include <string>
 #include <tuple>
 #include <type_traits>
 
@@ -58,7 +60,12 @@ private:
   const Engine *m_engine;
 };
 
-template <typename... T> class Sum final : public Node {
+class WithVhdl {
+public:
+  virtual auto operator!() const -> std::string = 0;
+};
+
+template <typename... T> class Sum final : public Node, public WithVhdl {
 public:
   NODEFAULT_NOCOPY_NOMOVE(Sum);
   constexpr explicit Sum(const Engine *engine, const T &...nodes)
@@ -70,16 +77,32 @@ public:
     });
   };
 
+  auto operator!() const -> std::string override {
+    const char* inputParam = "inp0, inp1, inp2";
+    const char* inputDeclaration = "input inp0; input inp1; input inp2;";
+    const char* sumExpr = "inp0 + inp1 + inp2";
+    return std::format(R"HERE(
+      module orpheus_sum_%d(%s, o)
+        %s
+        output o;
+
+        o <= %s;
+      endmodule
+    )HERE", inputParam, inputDeclaration, sumExpr);
+  }
+
 private:
   std::tuple<const T &...> m_inps;
 };
 
-class Inverse final : public Node {
+class Inverse final : public Node, public WithVhdl {
 public:
   NODEFAULT_NOCOPY_NOMOVE(Inverse);
   constexpr explicit Inverse(const Engine *engine, const Node &inp)
       : Node(engine), m_inp(inp) {}
+
   auto operator()() const -> Engine::QuantType override;
+  auto operator!() const -> std::string override;
 
 private:
   const Node &m_inp;
