@@ -16,6 +16,7 @@ public:
   using SampleType = uint32_t;
   using TickType = uint64_t;
   using QuantType = int16_t;
+  using DoubleQuantType = int32_t;
 
   NODEFAULT_NOCOPY_NOMOVE(Engine);
 
@@ -58,24 +59,17 @@ private:
 };
 
 template <typename... T> class Sum final : public Node {
-  static_assert(std::is_base_of<Node, T...>::value,
-                "T must inherit from Orpheus::Graph::Node");
-
 public:
   NODEFAULT_NOCOPY_NOMOVE(Sum);
   constexpr explicit Sum(const Engine *engine, const T &...nodes)
       : Node(engine), m_inps(nodes...) {}
 
   auto operator()() const -> Engine::QuantType override {
-    const auto sum2 = [](const Node &lhs, const Node &rhs) {
-      return lhs() + rhs();
-    };
-
-    return tuple_sum(m_inps);
+    return tuple_sum(m_inps, [](auto const &...ele) -> decltype(auto) { return (ele() + ...); });
   };
 
 private:
-  std::tuple<T...> m_inps;
+  std::tuple<const T&...> m_inps;
 };
 
 class Inverse final : public Node {
@@ -91,7 +85,7 @@ private:
 
 class Attenuator final : public Node {
 public:
-  using AttenFactor = uint16_t;
+  using AttenFactor = int16_t;
 
   NODEFAULT_NOCOPY_NOMOVE(Attenuator);
   constexpr explicit Attenuator(const Engine *engine, const Node &inp)
