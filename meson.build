@@ -25,18 +25,13 @@ test_includes = [
 ]
 
 test_sources = [
-  'test/test_sinesource.cpp',
-  'test/test_attenuator.cpp',
-  'test/test_inverse.cpp',
-  'test/test_sum.cpp',
-  'test/test_orpheus.cpp',
+  ['test_sinesource', 'test/test_sinesource.cpp'],
+  ['test_attenuator', 'test/test_attenuator.cpp'],
+  ['test_inverse', 'test/test_inverse.cpp'],
+  ['test_sum', 'test/test_sum.cpp'],
 ]
 
-test('test_orpheus',
-  executable(
-    'test_orpheus',
-    [test_sources, 'src/orpheus.cpp'],
-    include_directories: test_includes,
-  ),
-  args: ['-s']
-)
+foreach test_src : test_sources
+  t_exe = executable(test_src[0], [test_src[1], sources], include_directories: test_includes)
+  test(test_src[0], t_exe)
+endforeach

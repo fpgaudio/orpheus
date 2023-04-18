@@ -1,3 +1,4 @@
+#define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
 #include "orpheus.hpp"
 #include "test_utils.hpp"
