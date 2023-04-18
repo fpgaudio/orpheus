@@ -22,10 +22,12 @@
   NOMOVE(ClassName)
 // NOLINTEND(cppcoreguidelines-macro-usage)
 
-template <class Tuple, typename Func> auto tuple_sum(
+template <class Tuple, typename Func>
+auto tuple_sum(
     Tuple const &tuple,
-    Func foldFunc = [](auto const &...ele) -> decltype(auto) { return (ele + ...); }
-  ) -> decltype(auto) {
+    Func foldFunc = [](auto const &...ele) -> decltype(auto) {
+      return (ele + ...);
+    }) -> decltype(auto) {
   return std::apply(foldFunc, tuple);
 };
 

@@ -65,11 +65,13 @@ public:
       : Node(engine), m_inps(nodes...) {}
 
   auto operator()() const -> Engine::QuantType override {
-    return tuple_sum(m_inps, [](auto const &...ele) -> decltype(auto) { return (ele() + ...); });
+    return tuple_sum(m_inps, [](auto const &...ele) -> decltype(auto) {
+      return (ele() + ...);
+    });
   };
 
 private:
-  std::tuple<const T&...> m_inps;
+  std::tuple<const T &...> m_inps;
 };
 
 class Inverse final : public Node {
