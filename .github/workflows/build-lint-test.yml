@@ -16,7 +16,7 @@ jobs:
       - name: Get Python
         uses: actions/setup-python@v4
       - name: Fetch Build Dependencies
-        run: sudo apt-get install -y ninja-build clang-tidy clang-format
+        run: sudo apt-get install -y ninja-build clang-tidy clang-format gcovr
       - name: Fetch meson
         run: sudo python3 -m pip install meson
 
