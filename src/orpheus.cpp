@@ -14,8 +14,10 @@ auto Inverse::operator()() const -> Engine::QuantType {
   return static_cast<Engine::QuantType>(-m_inp());
 }
 auto Attenuator::operator()() const -> Engine::QuantType {
+  const auto input = m_inp();
+  const Engine::DoubleQuantType scaled = input * m_attenFactor;
   return static_cast<Engine::QuantType>(
-      m_attenFactor * m_inp() / std::numeric_limits<AttenFactor>::max());
+      scaled / std::numeric_limits<AttenFactor>::max());
 }
 void Attenuator::setAtten(AttenFactor attenuation) {
   m_attenFactor = attenuation;

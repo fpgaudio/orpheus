@@ -2,6 +2,7 @@ project('orpheus', 'cpp', default_options: [
   'default_library=static',
   'cpp_std=c++20',
   'b_coverage=true',
+  'warning_level=3',
 ], version: '0.1.0')
 
 include_directories = [
@@ -23,11 +24,14 @@ test_includes = [
   'lib/asciichart/include/ascii',
 ]
 
-test('test_orpheus',
-  executable(
-    'test_orpheus',
-    ['test/test_orpheus.cpp', 'src/orpheus.cpp'],
-    include_directories: test_includes,
-  ),
-  args: ['-s']
-)
+test_sources = [
+  ['test_sinesource', 'test/test_sinesource.cpp'],
+  ['test_attenuator', 'test/test_attenuator.cpp'],
+  ['test_inverse', 'test/test_inverse.cpp'],
+  ['test_sum', 'test/test_sum.cpp'],
+]
+
+foreach test_src : test_sources
+  t_exe = executable(test_src[0], [test_src[1], sources], include_directories: test_includes)
+  test(test_src[0], t_exe)
+endforeach
