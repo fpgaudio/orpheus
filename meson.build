@@ -18,7 +18,7 @@ run_target('auto-lint', command: 'tools/auto-lint.sh')
 
 liborpheus = library('orpheus', sources, include_directories: include_directories)
 liborpheus_dep = declare_dependency(include_directories: include_directories,
-  link_with: libsimple)
+  link_with: liborpheus)
 
 test_includes = [
   include_directories,
