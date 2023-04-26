@@ -33,15 +33,6 @@ jobs:
       - name: Link compile_commands.json
         run: ln -s ./build/compile_commands.json compile_commands.json
 
-      - name: Attempt to Autolint
-        working-directory: ./build
-        run: meson compile auto-lint
-
-      - name: Push Lint
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: 'Auto-Lint Bot'
-
       - name: Lint
         working-directory: ./build
         run: meson compile lint
