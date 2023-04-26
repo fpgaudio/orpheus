@@ -12,9 +12,7 @@ namespace Orpheus {
 
 namespace Graph {
 
-auto Inverse::operator()() const -> Engine::QuantType {
-  return -m_inp();
-}
+auto Inverse::operator()() const -> Engine::QuantType { return -m_inp(); }
 auto Attenuator::operator()() const -> Engine::QuantType {
   const auto input = m_inp();
   const Engine::DoubleQuantType scaled = input * m_attenFactor;
@@ -27,11 +25,12 @@ void Attenuator::setAtten(AttenFactor attenuation) {
 
 auto SineSource::operator()() const -> Engine::QuantType {
   // std::numeric_limits<int16_t>::max() corresponds to 2pi
-  const uint64_t angle = (std::numeric_limits<int16_t>::max() * getEngine().getTickCount())
-                       / getPeriodTicks();
-  // Fixed::Math::sin outputs values [0-4096], and we must output numeric_limits values, hence why
-  // we multiply. Could be an easy unsigned shift << 3 with sign carry, but I'll let the compiler
-  // do that.
+  const uint64_t angle =
+      (std::numeric_limits<int16_t>::max() * getEngine().getTickCount()) /
+      getPeriodTicks();
+  // Fixed::Math::sin outputs values [0-4096], and we must output numeric_limits
+  // values, hence why we multiply. Could be an easy unsigned shift << 3 with
+  // sign carry, but I'll let the compiler do that.
   const auto scale = 8;
   return Math::Fixed::sin(angle) * scale;
 }

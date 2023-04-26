@@ -29,9 +29,7 @@ public:
   [[nodiscard]] constexpr auto getTickCount() const -> TickType {
     return m_tick;
   };
-  [[nodiscard]] constexpr auto getTime() const -> uint32_t {
-    return m_tick;
-  }
+  [[nodiscard]] constexpr auto getTime() const -> uint32_t { return m_tick; }
   constexpr void tick() { m_tick++; }
 
 private:
