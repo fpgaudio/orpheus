@@ -46,6 +46,7 @@ jobs:
         run: ninja coverage-text && cat meson-logs/coverage.txt
 
       - name: Upload Artifacts
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: meson-logs
