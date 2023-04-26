@@ -15,7 +15,7 @@ class Engine {
 public:
   using SampleType = uint32_t;
   using TickType = uint64_t;
-  using QuantType = int32_t; // Fixed point, 16.16
+  using QuantType = int32_t; // Fixed point, 17.15
   using DoubleQuantType = int32_t;
 
   NODEFAULT_NOCOPY_NOMOVE(Engine);
