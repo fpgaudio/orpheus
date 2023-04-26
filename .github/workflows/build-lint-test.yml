@@ -44,3 +44,9 @@ jobs:
       - name: Calculate Coverage
         working-directory: ./build
         run: ninja coverage-text && cat meson-logs/coverage.txt
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: meson-logs
+          path: build/meson-logs
