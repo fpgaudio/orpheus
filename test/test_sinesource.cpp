@@ -37,7 +37,7 @@ SCENARIO("Sine Waves Can Be Generated", "[SineSource]") {
         engine.tick();
       }
       THEN("The sinewave reaches its maximum") {
-        REQUIRE(std::pow(2, 16) == source());
+        REQUIRE(std::pow(2, 15) == source());
       }
     }
 
