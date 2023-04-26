@@ -33,14 +33,21 @@ jobs:
       - name: Link compile_commands.json
         run: ln -s ./build/compile_commands.json compile_commands.json
 
-      - name: Lint
-        working-directory: ./build
-        run: meson compile lint
-
       - name: Test
         working-directory: ./build
         run: meson test
 
+      - name: Lint
+        working-directory: ./build
+        run: meson compile lint
+
       - name: Calculate Coverage
         working-directory: ./build
         run: ninja coverage-text && cat meson-logs/coverage.txt
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: meson-logs
+          path: build/meson-logs

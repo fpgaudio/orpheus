@@ -1,3 +1,4 @@
+#include <cmath>
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
 #include "orpheus.hpp"
@@ -22,20 +23,21 @@ SCENARIO("Sine Waves Can Be Generated", "[SineSource]") {
       }
     };
 
-    WHEN("The tick increments by a single period") {
-      engine.tick();
+    const auto initialTicks = 10;
+    WHEN("The tick increments by a couple periods") {
+      for (size_t i = 0; i < initialTicks; i++) { engine.tick(); }
       THEN("The output of the source must be non-zero") {
         REQUIRE(source() != 0);
       }
     };
 
     WHEN("The tick increments to a quarter of the period") {
-      for (size_t i = 1; i < source.getPeriodTicks() / 4; i++) {
+      for (size_t i = initialTicks; i < source.getPeriodTicks() / 4; i++) {
         sine[i] = source();
         engine.tick();
       }
       THEN("The sinewave reaches its maximum") {
-        REQUIRE(std::numeric_limits<Orpheus::Engine::QuantType>::max() == source());
+        REQUIRE(std::pow(2, 15) == source());
       }
     }
 

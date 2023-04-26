@@ -29,6 +29,7 @@ test_sources = [
   ['test_attenuator', 'test/test_attenuator.cpp'],
   ['test_inverse', 'test/test_inverse.cpp'],
   ['test_sum', 'test/test_sum.cpp'],
+  ['test_util', 'test/test_util.cpp'],
 ]
 
 foreach test_src : test_sources
