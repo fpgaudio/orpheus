@@ -44,3 +44,13 @@ jobs:
       - name: Calculate Coverage
         working-directory: ./build
         run: ninja coverage-text && cat meson-logs/coverage.txt
+
+  auto-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Auto-Lint
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: '.'
+          author_name: 'Auto-Lint Bot'
