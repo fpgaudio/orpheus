@@ -15,7 +15,7 @@ class Engine {
 public:
   using SampleType = uint32_t;
   using TickType = uint64_t;
-  using QuantType = int16_t;
+  using QuantType = int32_t; // Fixed point, 16.16
   using DoubleQuantType = int32_t;
 
   NODEFAULT_NOCOPY_NOMOVE(Engine);
@@ -29,6 +29,9 @@ public:
   [[nodiscard]] constexpr auto getTickCount() const -> TickType {
     return m_tick;
   };
+  [[nodiscard]] constexpr auto getTime() const -> uint32_t {
+    return m_tick;
+  }
   constexpr void tick() { m_tick++; }
 
 private:

@@ -1,6 +1,8 @@
 #include "orpheus.hpp"
+#include "orpheus_util.hpp"
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <limits>
 #include <numbers>
 #include <numeric>
@@ -11,7 +13,7 @@ namespace Orpheus {
 namespace Graph {
 
 auto Inverse::operator()() const -> Engine::QuantType {
-  return static_cast<Engine::QuantType>(-m_inp());
+  return -m_inp();
 }
 auto Attenuator::operator()() const -> Engine::QuantType {
   const auto input = m_inp();
@@ -24,24 +26,14 @@ void Attenuator::setAtten(AttenFactor attenuation) {
 }
 
 auto SineSource::operator()() const -> Engine::QuantType {
-  // TODO(markovejnovic): "SineSource uses floating point math::sin. This should
-  // get rewritten."
-  // TODO(markovejnovic): SineSource performs a possibly expensive operation
-  // that does not get memoized. Wasted.
-
-  const auto tickCount = getEngine().getTickCount();
-  const auto samplePeriodNs = getEngine().getSamplePeriodNs();
-  const auto samplePeriodS = samplePeriodNs * 1e-9;
-  const auto cTime = static_cast<float>(tickCount * samplePeriodNs) * 1e-9;
-
-  const auto frequency =
-      1.0F / static_cast<float>(getPeriodTicks() * samplePeriodS);
-  const auto ampl =
-      static_cast<float>(std::numeric_limits<Engine::QuantType>::max());
-  const auto out = static_cast<float>(
-      ampl * std::sin(2 * std::numbers::pi * frequency * cTime));
-
-  return static_cast<Engine::QuantType>(out);
+  // std::numeric_limits<int16_t>::max() corresponds to 2pi
+  const uint64_t angle = (std::numeric_limits<int16_t>::max() * getEngine().getTickCount())
+                       / getPeriodTicks();
+  // Fixed::Math::sin outputs values [0-4096], and we must output numeric_limits values, hence why
+  // we multiply. Could be an easy unsigned shift << 3 with sign carry, but I'll let the compiler
+  // do that.
+  const auto scale = 8;
+  return Math::Fixed::sin(angle) * scale;
 }
 
 } // namespace Graph
