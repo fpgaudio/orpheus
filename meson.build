@@ -5,6 +5,11 @@ project('orpheus', 'cpp', default_options: [
   'warning_level=3',
 ], version: '0.1.0')
 
+doxygen = find_program('doxygen', required: false)
+if not doxygen.found()
+  warning('doxygen not found. Documentation will not be built.')
+endif
+
 include_directories = [
   'include',
 ]
@@ -38,3 +43,28 @@ foreach test_src : test_sources
   t_exe = executable(test_src[0], [test_src[1], sources], include_directories: test_includes)
   test(test_src[0], t_exe)
 endforeach
+
+doc_config = configuration_data()
+doc_config.set('PACKAGE_NAME', meson.project_name())
+doc_config.set('PACKAGE_VERSION', meson.project_version())
+doc_config.set('builddir', meson.current_build_dir())
+doc_config.set('srcdir', meson.source_root())
+
+doxyfile = configure_file(input: 'docs' / 'orpheus.doxygen.in',
+                          output: 'orpheus.doxygen',
+                          configuration: doc_config,
+                          install: false)
+
+doxy_src = [
+  meson.source_root() / 'docs' / 'mainpage.dox',
+  meson.source_root() / 'include' / 'orpheus.hpp',
+]
+
+custom_target(
+  'docs',
+  input: doxy_src,
+  output: ['.'],
+  command: [doxygen, doxyfile],
+  install: false,
+  build_by_default: true
+)
