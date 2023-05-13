@@ -5,7 +5,7 @@ project('orpheus', 'cpp', default_options: [
   'warning_level=3',
 ], version: '0.1.0')
 
-doxygen = find_program('doxygen', required: false)
+doxygen = find_program('doxygen', required: false, disabler: true)
 if not doxygen.found()
   warning('doxygen not found. Documentation will not be built.')
 endif
@@ -65,8 +65,8 @@ doxyfile = configure_file(input: 'docs' / 'orpheus.doxygen.in',
                           install: false)
 
 doxy_src = [
-  meson.source_root() / 'docs' / 'mainpage.dox',
-  meson.source_root() / 'include' / 'orpheus.hpp',
+  'docs' / 'mainpage.dox',
+  'include' / 'orpheus.hpp',
 ]
 
 custom_target(
