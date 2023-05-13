@@ -25,11 +25,15 @@ liborpheus = library('orpheus', sources, include_directories: include_directorie
 liborpheus_dep = declare_dependency(include_directories: include_directories,
   link_with: liborpheus)
 
-test_includes = [
-  include_directories,
-  'lib/Catch2/single_include',
-  'lib/asciichart/include/ascii',
-]
+# Testing
+###############################################################################
+catch2_dep = dependency('catch2')
+asciichart_proj = subproject('asciichart')
+asciichart_dep = asciichart_proj.get_variable('asciichart_dep')
+
+test_deps = [catch2_dep, asciichart_dep]
+
+test_includes = [include_directories]
 
 test_sources = [
   ['test_sinesource', 'test/test_sinesource.cpp'],
@@ -40,7 +44,12 @@ test_sources = [
 ]
 
 foreach test_src : test_sources
-  t_exe = executable(test_src[0], [test_src[1], sources], include_directories: test_includes)
+  t_exe = executable(
+    test_src[0],
+    [test_src[1], sources],
+    include_directories: test_includes,
+    dependencies: test_deps
+  )
   test(test_src[0], t_exe)
 endforeach
 
